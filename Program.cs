@@ -1,6 +1,5 @@
 ﻿using System.Drawing;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 var config = new ConfigurationBuilder()
         .AddJsonFile("config.json")
