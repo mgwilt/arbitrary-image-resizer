@@ -29,7 +29,7 @@ jobs:
       run: dotnet publish --configuration Release --no-build --self-contained -r win-x64 -p:PublishSingleFile=true -p:BuildNumber=${{ github.run_number }} -o ./publish
 
     - name: Upload Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ArbitraryImageResizer
         path: ./publish/ArbitraryImageResizer.exe
@@ -40,7 +40,7 @@ jobs:
 
     steps:
     - name: Download Artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: ArbitraryImageResizer
       
@@ -61,5 +61,6 @@ jobs:
         -Headers @{Authorization="token ${{ secrets.RELEASE_TOKEN }}"; "Content-Type"="application/octet-stream"} `
         -Uri $uploadUrl `
         -Method POST `
-        -InFile ./ArbitraryImageResizer/ArbitraryImageResizer.exe
+        -InFile ./ArbitraryImageResizer/publish/ArbitraryImageResizer.exe
       shell: pwsh
+
