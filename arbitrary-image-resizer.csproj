@@ -3,10 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0-windows</TargetFramework>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <AssemblyName>ArbitraryImageResizer</AssemblyName>
     <RootNamespace>arbitrary_image_resizer</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
