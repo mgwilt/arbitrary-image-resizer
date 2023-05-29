@@ -38,7 +38,7 @@ jobs:
       id: getversion
       run: |
         $version = [xml](Get-Content ./arbitrary-image-resizer.csproj)
-        echo "::set-output name=RELEASE_VERSION::$($version.Project.PropertyGroup.Version)"
+        echo "::set-output name=RELEASE_VERSION::v$($version.Project.PropertyGroup.Version)"
       shell: pwsh
 
     - name: Debug Version
@@ -51,7 +51,7 @@ jobs:
         -Uri https://api.github.com/repos/${{ github.repository }}/releases `
         -Method POST `
         -Body (ConvertTo-Json @{
-            tag_name = "v${{ steps.getversion.outputs.RELEASE_VERSION }}"
+            tag_name = "${{ steps.getversion.outputs.RELEASE_VERSION }}"
             name = "Release ${{ steps.getversion.outputs.RELEASE_VERSION }}"
             draft = $false
             prerelease = $false
