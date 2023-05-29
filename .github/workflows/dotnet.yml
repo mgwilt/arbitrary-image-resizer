@@ -48,7 +48,7 @@ jobs:
         })
         $uploadUrl = $releaseResponse.upload_url -replace "{?name,label}", "?name=ArbitraryImageResizer.exe"
         Invoke-RestMethod `
-        -Headers @{Authorization="token ${{ secrets.GITHUB_TOKEN }}"; "Content-Type"="application/octet-stream"} `
+        -Headers @{Authorization="token ${{ secrets.RELEASE_TOKEN }}"; "Content-Type"="application/octet-stream"} `
         -Uri $uploadUrl `
         -Method POST `
         -InFile ./publish/ArbitraryImageResizer.exe
