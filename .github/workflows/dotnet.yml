@@ -34,6 +34,16 @@ jobs:
         name: ArbitraryImageResizer
         path: ./publish/ArbitraryImageResizer.exe
 
+  release:
+    needs: build
+    runs-on: windows-latest
+
+    steps:
+    - name: Download Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: ArbitraryImageResizer
+      
     - name: Create Release
       run: |
         $releaseResponse = Invoke-RestMethod `
@@ -51,5 +61,5 @@ jobs:
         -Headers @{Authorization="token ${{ secrets.RELEASE_TOKEN }}"; "Content-Type"="application/octet-stream"} `
         -Uri $uploadUrl `
         -Method POST `
-        -InFile ./publish/ArbitraryImageResizer.exe
+        -InFile ./ArbitraryImageResizer/ArbitraryImageResizer.exe
       shell: pwsh
