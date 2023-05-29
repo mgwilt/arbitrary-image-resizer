@@ -3,8 +3,6 @@ name: Build and Publish
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:
@@ -28,8 +26,23 @@ jobs:
     - name: Publish
       run: dotnet publish --configuration Release --no-build --self-contained -r win-x64 -p:PublishSingleFile=true -o ./publish
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v2
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        name: ArbitraryImageResizer
-        path: ./publish/ArbitraryImageResizer.exe
+        tag_name: ${{ github.sha }}
+        release_name: Release ${{ github.sha }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./publish/ArbitraryImageResizer.exe
+        asset_name: ArbitraryImageResizer.exe
+        asset_content_type: application/octet-stream
