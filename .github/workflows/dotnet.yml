@@ -20,10 +20,10 @@ jobs:
         dotnet-version: 7.0.x
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore --runtime win-x64
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build --configuration Release --runtime win-x64 --no-restore
 
     - name: Publish
       run: dotnet publish --configuration Release --no-build --self-contained -r win-x64 -p:PublishSingleFile=true -o ./publish
@@ -31,5 +31,5 @@ jobs:
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: arbitrary-image-resizer
-        path: ./publish/arbitrary-image-resizer.exe
+        name: ArbitraryImageResizer
+        path: ./publish/ArbitraryImageResizer.exe
