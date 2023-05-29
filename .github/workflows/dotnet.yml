@@ -3,6 +3,8 @@ name: Build and Publish
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
@@ -26,23 +28,28 @@ jobs:
     - name: Publish
       run: dotnet publish --configuration Release --no-build --self-contained -r win-x64 -p:PublishSingleFile=true -o ./publish
 
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
       with:
-        tag_name: ${{ github.sha }}
-        release_name: Release ${{ github.sha }}
-        draft: false
-        prerelease: false
+        name: ArbitraryImageResizer
+        path: ./publish/ArbitraryImageResizer.exe
 
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./publish/ArbitraryImageResizer.exe
-        asset_name: ArbitraryImageResizer.exe
-        asset_content_type: application/octet-stream
+    - name: Create Release
+      run: |
+        $releaseResponse = Invoke-RestMethod `
+        -Headers @{Authorization="token ${{ secrets.GITHUB_TOKEN }}"} `
+        -Uri https://api.github.com/repos/${{ github.repository }}/releases `
+        -Method POST `
+        -Body (ConvertTo-Json @{
+            tag_name = "${{ github.sha }}"
+            name = "Release ${{ github.sha }}"
+            draft = $false
+            prerelease = $false
+        })
+        $uploadUrl = $releaseResponse.upload_url -replace "{?name,label}", "?name=ArbitraryImageResizer.exe"
+        Invoke-RestMethod `
+        -Headers @{Authorization="token ${{ secrets.GITHUB_TOKEN }}"; "Content-Type"="application/octet-stream"} `
+        -Uri $uploadUrl `
+        -Method POST `
+        -InFile ./publish/ArbitraryImageResizer.exe
+      shell: pwsh
