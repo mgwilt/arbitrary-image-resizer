@@ -38,8 +38,10 @@ jobs:
       id: getversion
       run: |
         $version = [xml](Get-Content ./arbitrary-image-resizer.csproj)
-        echo "::set-output name=RELEASE_VERSION::v$($version.Project.PropertyGroup.Version)"
+        $versionNumber = $version.Project.PropertyGroup.Version.Trim()
+        echo "::set-output name=RELEASE_VERSION::v$versionNumber"
       shell: pwsh
+  
 
     - name: Debug Version
       run: echo "Release Version is ${{ steps.getversion.outputs.RELEASE_VERSION }}"
