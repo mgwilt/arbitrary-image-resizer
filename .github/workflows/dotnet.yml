@@ -34,16 +34,6 @@ jobs:
         name: ArbitraryImageResizer
         path: ./publish/ArbitraryImageResizer.exe
 
-    - name: Get Version
-      id: getversion
-      run: |
-        $version = [xml](Get-Content ./arbitrary-image-resizer.csproj)
-        echo "RELEASE_VERSION=v$($version.Project.PropertyGroup.Version)" >> $GITHUB_OUTPUT
-      shell: pwsh
-
-    - name: Debug Version
-      run: echo "Release Version is ${{ steps.getversion.outputs.RELEASE_VERSION }}"
-
     - name: Create Release
       run: |
         $releaseResponse = Invoke-RestMethod `
@@ -51,8 +41,8 @@ jobs:
         -Uri https://api.github.com/repos/${{ github.repository }}/releases `
         -Method POST `
         -Body (ConvertTo-Json @{
-            tag_name = "${{ steps.getversion.outputs.RELEASE_VERSION }}"
-            name = "Release ${{ steps.getversion.outputs.RELEASE_VERSION }}"
+            tag_name = "v1.0.0"
+            name = "Release v1.0.0"
             draft = $false
             prerelease = $false
         })
