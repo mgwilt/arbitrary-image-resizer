@@ -37,7 +37,7 @@ jobs:
     - name: Get Version
       id: getversion
       run: |
-        $version = [xml](Get-Content ./PathToYourProject/arbitrary-image-resizer.csproj)
+        $version = [xml](Get-Content ./arbitrary-image-resizer.csproj)
         echo "::set-output name=RELEASE_VERSION::$( $version.Project.PropertyGroup.Version )"
       shell: pwsh
 
