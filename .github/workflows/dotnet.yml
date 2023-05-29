@@ -37,7 +37,7 @@ jobs:
     - name: Create Release
       run: |
         $releaseResponse = Invoke-RestMethod `
-        -Headers @{Authorization="token ${{ secrets.GITHUB_TOKEN }}"} `
+        -Headers @{Authorization="token ${{ secrets.RELEASE_TOKEN }}"} `
         -Uri https://api.github.com/repos/${{ github.repository }}/releases `
         -Method POST `
         -Body (ConvertTo-Json @{
