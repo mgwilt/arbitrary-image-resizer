@@ -61,6 +61,6 @@ jobs:
         -Headers @{Authorization="token ${{ secrets.RELEASE_TOKEN }}"; "Content-Type"="application/octet-stream"} `
         -Uri $uploadUrl `
         -Method POST `
-        -InFile ./ArbitraryImageResizer/publish/ArbitraryImageResizer.exe
+        -InFile ./arbitrary-image-resizer/ArbitraryImageResizer.exe
       shell: pwsh
 
